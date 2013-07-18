@@ -1,0 +1,22 @@
+{
+  "name": "telephone_duplexer",
+  "version": "0.0.1",
+  "description": "bi-direction event emitter over a stream",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": "",
+  "keywords": [
+    "emit-stream",
+    "bidirectional",
+    "events"
+  ],
+  "author": "Brandon Farmer",
+  "license": "BSD",
+  "readmeFilename": "README.md",
+  "dependencies": {
+    "emit-stream": "~0.1.2",
+    "JSONStream": "~0.6.4"
+  }
+}
