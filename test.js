@@ -60,7 +60,8 @@ NopStream.prototype.end = function () {
     var stream = new NopStream(),
         tele1  = new Telephone(stream);
 
-    t.plan(1);
+    t.plan(2);
+    t.ok(tele1.incoming.setMaxListeners, 'function exists');
 
     tele1.incoming.setMaxListeners = function(count) {
       t.equal(count, 15, 'maxListeners is delegated.');
@@ -73,7 +74,8 @@ NopStream.prototype.end = function () {
     var stream = new NopStream(),
         tele1  = new Telephone(stream);
 
-    t.plan(1);
+    t.plan(2);
+    t.ok(tele1.incoming.removeAllListeners, 'function exists');
 
     tele1.incoming.removeAllListeners = function() {
       t.ok(true, 'listeners removed');
