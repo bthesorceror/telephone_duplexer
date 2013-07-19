@@ -39,4 +39,20 @@ NopStream.prototype.end = function () {
 
     tele1.emit('message2', 'BLAH2');
   });
+
+  tape("generic 'incoming' event", function(t) {
+    var stream = new NopStream();
+
+    var tele1 = new Telephone(stream),
+        tele2 = new Telephone(stream);
+
+    t.plan(2);
+
+    tele1.events().on('incoming', function(event, msg) {
+      t.equal(event, 'message1', 'corrent event');
+      t.equal(msg, 'BLAH', 'correct argument');
+    });
+
+    tele2.emit('message1', 'BLAH');
+  });
 })();
