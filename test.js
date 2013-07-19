@@ -23,12 +23,17 @@ NopStream.prototype.end = function () {
     var stream = new NopStream();
 
     var tele1 = new Telephone(stream),
-        tele2 = new Telephone(stream);
+        tele2 = new Telephone(stream),
+        tele3 = new Telephone(stream);
 
-    t.plan(2);
+    t.plan(3);
 
     tele1.on('message1', function(msg) {
       t.equal(msg, "BLAH", "Tele 1 recieved event");
+    });
+
+    tele3.on('message1', function(msg) {
+      t.equal(msg, "BLAH", "Tele 3 recieved event");
     });
 
     tele2.emit('message1', 'BLAH');
