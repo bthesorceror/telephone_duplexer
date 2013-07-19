@@ -9,7 +9,6 @@ var NopStream = function () {
 require('util').inherits(NopStream, require('stream'));
 
 NopStream.prototype.write = function () {
-  console.dir(arguments);
   args = Array.prototype.slice.call(arguments, 0);
   this.emit.apply(this, ['data'].concat(args))
 };
