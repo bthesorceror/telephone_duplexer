@@ -3,7 +3,6 @@ var emitstream   = require('emit-stream'),
     EventEmitter = require('events').EventEmitter;
 
 function TelephoneDuplexer(stream) {
-  var self = this;
   this.stream = stream;
   this.setupIncoming();
   this.setupOutgoing();
