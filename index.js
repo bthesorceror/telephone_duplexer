@@ -5,12 +5,22 @@ var emitstream   = require('emit-stream'),
 function TelephoneDuplexer(stream) {
   var self = this;
   this.stream = stream;
-  this.incoming = emitstream(stream.pipe(json.parse()));
-  this.outgoing = new EventEmitter();
-  emitstream(this.outgoing).pipe(json.stringify(false)).pipe(stream);
-  var emit = this.incoming.emit;
+  this.setupIncoming();
+  this.setupOutgoing();
+}
 
-  this.incoming.emit = function() {
+TelephoneDuplexer.prototype.setupOutgoing = function() {
+  this.outgoing = new EventEmitter();
+  emitstream(this.outgoing).pipe(json.stringify(false)).pipe(this.stream);
+}
+
+TelephoneDuplexer.prototype.setupIncoming = function() {
+  this.incoming = emitstream(this.stream.pipe(json.parse()));
+  this.incoming.emit = this._handler(this, this.incoming.emit);
+}
+
+TelephoneDuplexer.prototype._handler = function(self, emit) {
+  return function() {
     var args = Array.prototype.slice.call(arguments);
     args.unshift('incoming');
     self.events().emit.apply(self.events(), args);
