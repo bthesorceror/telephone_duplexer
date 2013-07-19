@@ -49,4 +49,8 @@ TelephoneDuplexer.prototype.removeAllListeners = function() {
   this.incoming.removeAllListeners();
 }
 
+TelephoneDuplexer.prototype.removeListener = function() {
+  this.incoming.removeListener.apply(this.incoming, arguments);
+}
+
 module.exports = TelephoneDuplexer;

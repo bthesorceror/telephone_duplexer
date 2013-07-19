@@ -70,6 +70,21 @@ NopStream.prototype.end = function () {
     tele1.setMaxListeners(15);
   });
 
+  tape("removing specific listener", function(t) {
+    var stream = new NopStream(),
+        tele1  = new Telephone(stream);
+
+    t.plan(3);
+    t.ok(tele1.incoming.removeListener, 'function exists');
+
+    tele1.incoming.removeListener = function(event, cb) {
+      t.equal(cb, 'cb', 'correct callback');
+      t.equal(event, 'event', 'correct event');
+    }
+
+    tele1.removeListener('event', 'cb');
+  });
+
   tape("removing all listeners", function(t) {
     var stream = new NopStream(),
         tele1  = new Telephone(stream);
