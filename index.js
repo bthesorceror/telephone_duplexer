@@ -41,4 +41,8 @@ TelephoneDuplexer.prototype.emit = function() {
   this.outgoing.emit.apply(this.outgoing, arguments);
 }
 
+TelephoneDuplexer.prototype.setMaxListeners = function(count) {
+  this.incoming.setMaxListeners(count);
+}
+
 module.exports = TelephoneDuplexer;

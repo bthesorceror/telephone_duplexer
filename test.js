@@ -55,4 +55,18 @@ NopStream.prototype.end = function () {
 
     tele2.emit('message1', 'BLAH');
   });
+
+  tape("setting max listeners on incoming", function(t) {
+    var stream = new NopStream(),
+        tele1  = new Telephone(stream);
+
+    t.plan(1);
+
+    tele1.incoming.setMaxListeners = function(count) {
+      t.equal(count, 15, 'maxListeners is delegated.');
+    }
+
+    tele1.setMaxListeners(15);
+  });
+
 })();
