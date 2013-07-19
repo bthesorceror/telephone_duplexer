@@ -6,7 +6,8 @@
   "scripts": {
     "test": "node test.js"
   },
-  "repository": "",
+  "repository": "http://github.com/bthesorceror/telephone_duplexer",
+
   "keywords": [
     "emit-stream",
     "bidirectional",
