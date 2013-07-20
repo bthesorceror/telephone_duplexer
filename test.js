@@ -104,4 +104,43 @@ NopStream.prototype.end = function () {
     tele1.removeAllListeners();
   });
 
+  tape("delegates 'end' event", function(t) {
+    var stream = new NopStream(),
+        tele1  = new Telephone(stream);
+
+    t.plan(1);
+
+    tele1.events().on('end', function() {
+      t.ok(true, 'end event was received');
+    });
+
+    stream.emit('end');
+  });
+
+  tape("delegates 'close' event", function(t) {
+    var stream = new NopStream(),
+        tele1  = new Telephone(stream);
+
+    t.plan(1);
+
+    tele1.events().on('close', function() {
+      t.ok(true, 'close event was received');
+    });
+
+    stream.emit('close');
+  });
+
+  tape("delegates 'error' event", function(t) {
+    var stream = new NopStream(),
+        tele1  = new Telephone(stream);
+
+    t.plan(1);
+
+    tele1.events().on('error', function() {
+      t.ok(true, 'error event was received');
+    });
+
+    stream.emit('error');
+  });
+
 })();
