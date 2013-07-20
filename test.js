@@ -9,12 +9,12 @@ var NopStream = function () {
 require('util').inherits(NopStream, require('stream'));
 
 NopStream.prototype.write = function () {
-  args = Array.prototype.slice.call(arguments, 0);
+  var args = Array.prototype.slice.call(arguments, 0);
   this.emit.apply(this, ['data'].concat(args))
 };
 
 NopStream.prototype.end = function () {
-  args = Array.prototype.slice.call(arguments, 0);
+  var args = Array.prototype.slice.call(arguments, 0);
   this.emit.apply(this, ['end'].concat(args))
 };
 
