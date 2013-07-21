@@ -19,6 +19,10 @@ TelephoneDuplexer.prototype.delegateEvents = function() {
   });
 }
 
+TelephoneDuplexer.prototype.close = function() {
+  this.stream.end();
+}
+
 TelephoneDuplexer.prototype.setupOutgoing = function() {
   this.outgoing = new EventEmitter();
   emitstream(this.outgoing).pipe(json.stringify(false)).pipe(this.stream);

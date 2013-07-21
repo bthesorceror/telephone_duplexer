@@ -61,6 +61,19 @@ NopStream.prototype.end = function () {
     tele2.emit('message1', 'BLAH');
   });
 
+  tape("closing stream", function(t) {
+    var stream = new NopStream(),
+        tele1  = new Telephone(stream);
+
+    t.plan(1);
+
+    tele1.stream.end = function() {
+      t.ok(true, "'end' was called on stream")
+    }
+
+    tele1.close();
+  });
+
   tape("setting max listeners on incoming", function(t) {
     var stream = new NopStream(),
         tele1  = new Telephone(stream);
