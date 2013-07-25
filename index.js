@@ -1,6 +1,6 @@
 var emitstream   = require('emit-stream'),
     json         = require('JSONStream'),
-    NosyNeighbor = require('./nosy_neighbor'),
+    NosyNeighbor = require('nosy_neighbor'),
     EventEmitter = require('events').EventEmitter;
 
 function TelephoneDuplexer(stream, cb) {

@@ -7,7 +7,6 @@
     "test": "node test.js"
   },
   "repository": "http://github.com/bthesorceror/telephone_duplexer",
-
   "keywords": [
     "emit-stream",
     "bidirectional",
@@ -18,7 +17,8 @@
   "readmeFilename": "README.md",
   "dependencies": {
     "emit-stream": "~0.1.2",
-    "JSONStream": "~0.6.4"
+    "JSONStream": "~0.6.4",
+    "nosy_neighbor": "0.0.1"
   },
   "devDependencies": {
     "tape": "~1.0.4"
