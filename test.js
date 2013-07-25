@@ -53,12 +53,12 @@ NopStream.prototype.end = function () {
 
     t.plan(2);
 
-    tele1.events().on('incoming', function(event, msg) {
+    tele1.onEvent(function(event, msg) {
       t.equal(event, 'message1', 'corrent event');
-      t.equal(msg, 'BLAH', 'correct argument');
+      t.deepEqual(msg, ['BLAH', 'BLAH!'], 'correct arguments');
     });
 
-    tele2.emit('message1', 'BLAH');
+    tele2.emit('message1', 'BLAH', 'BLAH!');
   });
 
   tape("closing stream", function(t) {
