@@ -8,8 +8,8 @@ var server = net.createServer(function(socket) {
     console.log('SERVER: ' + msg);
   });
 
-  tele.events().on('incoming', function(event, message) {
-    console.log('EVENT: ' + event + ' MESSAGE: ' + message);
+  tele.onEvent(function(event, args) {
+    console.log('EVENT: ' + event + ' MESSAGE: ' + args[0]);
   });
 
   setInterval(function() {
@@ -26,8 +26,8 @@ var client = net.createConnection({host: 'localhost', port: 5001}, function() {
     console.log('CLIENT: ' + msg);
   });
 
-  tele.events().on('incoming', function(event, message) {
-    console.log('EVENT: ' + event + ' MESSAGE: ' + message);
+  tele.onEvent(function(event, args) {
+    console.log('EVENT: ' + event + ' MESSAGE: ' + args[0]);
   });
 
   setInterval(function() {
