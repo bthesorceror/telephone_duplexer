@@ -1,5 +1,6 @@
 var emitstream   = require('emit-stream'),
     json         = require('JSONStream'),
+    NosyNeighbor = require('./nosy_neighbor'),
     EventEmitter = require('events').EventEmitter;
 
 function TelephoneDuplexer(stream) {
@@ -23,6 +24,19 @@ TelephoneDuplexer.prototype.close = function() {
   this.stream.end();
 }
 
+TelephoneDuplexer.prototype.emitIncoming = function() {
+  var self = this;
+  return function(event, args) {
+    var params = ['incoming', event].concat(args);
+    self.events().emit.apply(self.events(), params);
+  }
+}
+
+TelephoneDuplexer.prototype.nosyNeighbor = function() {
+  this._nosy = this._nosy || (new NosyNeighbor(this.emitIncoming()));
+  return this._nosy;
+}
+
 TelephoneDuplexer.prototype.setupOutgoing = function() {
   this.outgoing = new EventEmitter();
   emitstream(this.outgoing).pipe(json.stringify(false)).pipe(this.stream);
@@ -30,7 +44,7 @@ TelephoneDuplexer.prototype.setupOutgoing = function() {
 
 TelephoneDuplexer.prototype.setupIncoming = function() {
   this.incoming = emitstream(this.stream.pipe(json.parse()));
-  this.incoming.emit = this._handler(this, this.incoming.emit);
+  this.nosyNeighbor().peek(this.incoming);
 }
 
 TelephoneDuplexer.prototype._handler = function(self, emit) {
