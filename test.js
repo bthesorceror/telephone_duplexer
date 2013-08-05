@@ -66,7 +66,7 @@ NopStream.prototype.end = function () {
 
     var tele1 = new Telephone(stream);
     var tele3 = new Telephone(stream);
-    var tele2 = new Telephone(stream, { callback_timeout: 100 });
+    var tele2 = new Telephone(stream);
 
     t.plan(3);
 
@@ -81,6 +81,12 @@ NopStream.prototype.end = function () {
 
     tele2.emit('message1', 'BLAH', function(name) {
       t.equal(name, 'Brandon', 'gets correct callback');
+    });
+
+    t.on('end', function() {
+      tele1.close();
+      tele2.close();
+      tele3.close();
     });
   });
 

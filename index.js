@@ -1,98 +1,7 @@
 var NosyNeighbor = require('nosy_neighbor'),
-    uuid         = require('uuid'),
-    util         = require('util'),
-    EventEmitter = require('events').EventEmitter;
-
-function StreamEncoder(stream, emitter, options) {
-  options = options || {};
-  this.stream = stream;
-  this.emitter = emitter;
-  this.timeout = options['timeout'] || 60000;
-}
-
-StreamEncoder.prototype.needsCallback = function(args) {
-  var last = args.slice(-1)[0];
-  return (typeof(last) == 'function');
-}
-
-StreamEncoder.prototype.parseArguments = function(args) {
-  return Array.prototype.slice.call(args, 0);
-}
-
-StreamEncoder.prototype.buildData = function(id, replies, args) {
-  var data = {
-    id: id,
-    replies: replies,
-    args: args
-  }
-
-  return JSON.stringify(data);
-}
-
-StreamEncoder.prototype.addTimeout = function(id, cb) {
-  var self = this;
-  setTimeout(function() {
-    self.emitter.removeListener(id, cb);
-  }, self.timeout);
-}
-
-StreamEncoder.prototype.emit = function() {
-  var id = uuid.v1();
-  var replies = false;
-  var args = this.parseArguments(arguments);
-
-  if (this.needsCallback(args)) {
-    replies = true;
-    var cb = args.splice(-1)[0];
-
-    this.emitter.on(id, cb);
-    this.addTimeout(id, cb);
-  }
-
-  this.stream.write(this.buildData(id, replies, args) + "\n");
-}
-
-function StreamDecoder(stream, emitter) {
-  this.stream = stream;
-  this.emitter = emitter;
-  this.setupEvents();
-}
-
-
-util.inherits(StreamDecoder, EventEmitter);
-
-StreamDecoder.prototype.createCallback = function(id) {
-  var self = this;
-  return function() {
-    var args = Array.prototype.slice.call(arguments, 0);
-    self.emit('reply', id, args);
-  }
-}
-
-StreamDecoder.prototype.handleData = function(data) {
-  var args = data.args;
-  if (data.replies) {
-    args = args.concat(this.createCallback(data.id));
-  }
-  this.emitter.emit.apply(this.emitter, args);
-}
-
-StreamDecoder.prototype.createDataParser = function() {
-  var self = this;
-  return function(raw_data) {
-    var arr = raw_data.toString().split("\n")
-    arr.forEach(function(line) {
-      if (line) {
-        self.handleData(JSON.parse(line.trim()));
-      }
-    });
-  }
-}
-
-StreamDecoder.prototype.setupEvents = function() {
-  this.stream.on('data', this.createDataParser());
-}
-
+    EventEmitter = require('events').EventEmitter,
+    StreamEncoder = require('./stream_encoder'),
+    StreamDecoder = require('./stream_decoder');
 
 function TelephoneDuplexer(stream, options) {
   options = options || {};
@@ -114,6 +23,7 @@ TelephoneDuplexer.prototype.delegateEvents = function() {
 }
 
 TelephoneDuplexer.prototype.close = function() {
+  this.outgoing.close();
   this.stream.end();
 }
 
