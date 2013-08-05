@@ -49,7 +49,7 @@ StreamEncoder.prototype.emit = function() {
     this.addTimeout(id, cb);
   }
 
-  this.stream.write(this.buildData(id, replies, args));
+  this.stream.write(this.buildData(id, replies, args) + "\n");
 }
 
 function StreamDecoder(stream, emitter) {
@@ -69,15 +69,23 @@ StreamDecoder.prototype.createCallback = function(id) {
   }
 }
 
+StreamDecoder.prototype.handleData = function(data) {
+  var args = data.args;
+  if (data.replies) {
+    args = args.concat(this.createCallback(data.id));
+  }
+  this.emitter.emit.apply(this.emitter, args);
+}
+
 StreamDecoder.prototype.createDataParser = function() {
   var self = this;
   return function(raw_data) {
-    var data = JSON.parse(raw_data.toString());
-    var args = data.args;
-    if (data.replies) {
-      args = args.concat(self.createCallback(data.id));
-    }
-    self.emitter.emit.apply(self.emitter, args);
+    var arr = raw_data.toString().split("\n")
+    arr.forEach(function(line) {
+      if (line) {
+        self.handleData(JSON.parse(line.trim()));
+      }
+    });
   }
 }
 
