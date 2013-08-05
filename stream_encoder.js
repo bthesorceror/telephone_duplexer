@@ -1,4 +1,5 @@
-var uuid         = require('uuid');
+var uuid    = require('uuid');
+var helpers = require('./helpers');
 
 function StreamEncoder(stream, emitter, options) {
   options = options || {};
@@ -11,10 +12,6 @@ function StreamEncoder(stream, emitter, options) {
 StreamEncoder.prototype.needsCallback = function(args) {
   var last = args.slice(-1)[0];
   return (typeof(last) == 'function');
-}
-
-StreamEncoder.prototype.parseArguments = function(args) {
-  return Array.prototype.slice.call(args, 0);
 }
 
 StreamEncoder.prototype.buildData = function(id, replies, args) {
@@ -50,7 +47,7 @@ StreamEncoder.prototype.close = function() {
 StreamEncoder.prototype.emit = function() {
   var id = uuid.v1();
   var replies = false;
-  var args = this.parseArguments(arguments);
+  var args = helpers.parseArgs(arguments);
 
   if (this.needsCallback(args)) {
     replies = true;

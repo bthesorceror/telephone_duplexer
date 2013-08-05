@@ -1,4 +1,5 @@
-var util         = require('util');
+var util = require('util');
+var helpers = require('./helpers');
 
 function StreamDecoder(stream, emitter) {
   this.stream = stream;
@@ -11,7 +12,7 @@ util.inherits(StreamDecoder, require('events').EventEmitter);
 StreamDecoder.prototype.createCallback = function(id) {
   var self = this;
   return function() {
-    var args = Array.prototype.slice.call(arguments, 0);
+    var args = helpers.parseArgs(arguments);
     self.emit('reply', id, args);
   }
 }
@@ -29,9 +30,7 @@ StreamDecoder.prototype.createDataParser = function() {
   return function(raw_data) {
     var arr = raw_data.toString().split("\n")
     arr.forEach(function(line) {
-      if (line) {
-        self.handleData(JSON.parse(line.trim()));
-      }
+      line && self.handleData(JSON.parse(line.trim()));
     });
   }
 }

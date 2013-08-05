@@ -68,5 +68,4 @@ EVENT: server MESSAGE: I AM YOUR SERVER LUKE!
 CLIENT: I AM YOUR SERVER LUKE!
 EVENT: bcf68d40-fdec-11e2-a66f-4b3f63c4cb06 MESSAGE: Tyler Durden
 CALLBACK: my name is Tyler Durden
-
 ```
