@@ -4,8 +4,9 @@ var Telephone = require('./index'),
 var server = net.createServer(function(socket) {
   var tele = new Telephone(socket);
 
-  tele.on('client', function(msg) {
+  tele.on('client', function(msg, reply) {
     console.log('SERVER: ' + msg);
+    reply("Tyler Durden");
   });
 
   tele.onEvent(function(event, args) {
@@ -31,6 +32,8 @@ var client = net.createConnection({host: 'localhost', port: 5001}, function() {
   });
 
   setInterval(function() {
-    tele.emit('client', 'USE THE FORCE');
+    tele.emit('client', 'USE THE FORCE', function(name) {
+      console.log('CALLBACK: my name is ' + name);
+    });
   }, 3000);
 });
