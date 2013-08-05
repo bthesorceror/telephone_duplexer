@@ -16,9 +16,8 @@
   "license": "BSD",
   "readmeFilename": "README.md",
   "dependencies": {
-    "emit-stream": "~0.1.2",
-    "JSONStream": "~0.6.4",
-    "nosy_neighbor": "0.0.1"
+    "nosy_neighbor": "0.0.1",
+    "uuid": "~1.4.1"
   },
   "devDependencies": {
     "tape": "~1.0.4"

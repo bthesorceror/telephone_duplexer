@@ -61,6 +61,29 @@ NopStream.prototype.end = function () {
     tele2.emit('message1', 'BLAH', 'BLAH!');
   });
 
+  tape("events with callbacks", function(t) {
+    var stream = new NopStream();
+
+    var tele1 = new Telephone(stream);
+    var tele3 = new Telephone(stream);
+    var tele2 = new Telephone(stream, { callback_timeout: 100 });
+
+    t.plan(3);
+
+    tele1.on('message1', function(msg, reply) {
+      t.deepEqual(msg, 'BLAH', 'correct argument');
+      reply('Brandon');
+    });
+
+    tele3.on('message1', function(msg, reply) {
+      reply('Brandon');
+    });
+
+    tele2.emit('message1', 'BLAH', function(name) {
+      t.equal(name, 'Brandon', 'gets correct callback');
+    });
+  });
+
   tape("closing stream", function(t) {
     var stream = new NopStream(),
         tele1  = new Telephone(stream);
