@@ -16,6 +16,7 @@ TelephoneDuplexer.prototype.delegateEvents = function() {
   var self = this;
   ['end', 'error', 'close'].forEach(function(event) {
     self.stream.on(event, function() {
+      self.outgoing.close();
       args = Array.prototype.slice.call(arguments, 0);
       self.events().emit.apply(self.events(), [event].concat(args));
     });
