@@ -1,6 +1,6 @@
 {
   "name": "telephone_duplexer",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "bi-direction event emitter over a stream",
   "main": "index.js",
   "scripts": {
