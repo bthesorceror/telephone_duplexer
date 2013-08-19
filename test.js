@@ -45,6 +45,23 @@ NopStream.prototype.end = function () {
     tele1.emit('message2', 'BLAH2');
   });
 
+  tape("once is delegated to incoming", function(t) {
+    var stream = new NopStream();
+
+    var tele1 = new Telephone(stream);
+    var tele2 = new Telephone(stream);
+
+    t.plan(1);
+
+    tele1.once('message1', function(msg) {
+      t.equal(msg, "BLAH", "Tele 1 recieved event");
+    });
+
+
+    tele2.emit('message1', 'BLAH');
+    tele2.emit('message1', 'BLAH');
+  });
+
   tape("generic 'incoming' event", function(t) {
     var stream = new NopStream();
 

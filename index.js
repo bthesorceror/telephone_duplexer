@@ -65,6 +65,10 @@ TelephoneDuplexer.prototype.on = function() {
   this.incoming.on.apply(this.incoming, arguments);
 }
 
+TelephoneDuplexer.prototype.once = function() {
+  this.incoming.once.apply(this.incoming, arguments);
+}
+
 TelephoneDuplexer.prototype.emit = function() {
   this.outgoing.emit.apply(this.outgoing, arguments);
 }
