@@ -153,9 +153,9 @@ NopStream.prototype.end = function () {
 
     t.plan(1);
 
-    tele1.events().on('end', function() {
-      t.ok(true, 'end event was received');
-    });
+    tele1.outgoing.close = function() {
+      t.ok(true, 'closes encoder');
+    };
 
     stream.emit('end');
   });
@@ -166,9 +166,9 @@ NopStream.prototype.end = function () {
 
     t.plan(1);
 
-    tele1.events().on('close', function() {
-      t.ok(true, 'close event was received');
-    });
+    tele1.outgoing.close = function() {
+      t.ok(true, 'closes encoder');
+    };
 
     stream.emit('close');
   });
@@ -179,7 +179,7 @@ NopStream.prototype.end = function () {
 
     t.plan(1);
 
-    tele1.events().on('error', function() {
+    tele1.on('error', function() {
       t.ok(true, 'error event was received');
     });
 
