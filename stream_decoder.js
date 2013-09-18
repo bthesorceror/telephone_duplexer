@@ -1,13 +1,13 @@
 var util = require('util');
 var helpers = require('./helpers');
+var Writable = require('stream').Writable;
 
-function StreamDecoder(stream, emitter) {
-  this.stream = stream;
+function StreamDecoder(emitter) {
+  Writable.apply(this);
   this.emitter = emitter;
-  this.setupEvents();
 }
 
-util.inherits(StreamDecoder, require('events').EventEmitter);
+util.inherits(StreamDecoder, Writable);
 
 StreamDecoder.prototype.createCallback = function(id) {
   var self = this;
@@ -25,18 +25,13 @@ StreamDecoder.prototype.handleData = function(data) {
   this.emitter.emit.apply(this.emitter, args);
 }
 
-StreamDecoder.prototype.createDataParser = function() {
+StreamDecoder.prototype._write = function(chunk, enc, next) {
   var self = this;
-  return function(raw_data) {
-    var arr = raw_data.toString().split("\n")
-    arr.forEach(function(line) {
-      line && self.handleData(JSON.parse(line.trim()));
-    });
-  }
-}
-
-StreamDecoder.prototype.setupEvents = function() {
-  this.stream.on('data', this.createDataParser());
+  var arr = chunk.toString().split("\n")
+  arr.forEach(function(line) {
+    line && self.handleData(JSON.parse(line.trim()));
+  });
+  next();
 }
 
 module.exports = StreamDecoder;

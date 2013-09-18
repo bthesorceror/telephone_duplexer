@@ -49,7 +49,9 @@ TelephoneDuplexer.prototype.setupIncoming = function() {
   this.incoming = new EventEmitter();
   this.nosyNeighbor().peek(this.incoming);
 
-  var decoder = (new StreamDecoder(this.stream, this.incoming, this));
+  var decoder = new StreamDecoder(this.incoming);
+
+  this.stream.pipe(decoder);
 
   decoder.on('reply', function(id, args) {
     self.emit.apply(self, [id].concat(args));

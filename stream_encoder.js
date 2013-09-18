@@ -51,7 +51,7 @@ StreamEncoder.prototype.emit = function() {
 
   if (this.needsCallback(args)) {
     replies = true;
-    var cb = args.splice(-1)[0];
+    var cb = args.pop();
 
     this.emitter.on(id, cb);
     this.addTimeout(id, cb);
