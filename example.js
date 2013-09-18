@@ -9,10 +9,6 @@ var server = net.createServer(function(socket) {
     reply("Tyler Durden");
   });
 
-  tele.onEvent(function(event, args) {
-    console.log('EVENT: ' + event + ' MESSAGE: ' + args[0]);
-  });
-
   setInterval(function() {
     tele.emit('server', 'I AM YOUR SERVER LUKE!');
   }, 3000);
@@ -25,10 +21,6 @@ var client = net.createConnection({host: 'localhost', port: 5001}, function() {
 
   tele.on('server', function(msg) {
     console.log('CLIENT: ' + msg);
-  });
-
-  tele.onEvent(function(event, args) {
-    console.log('EVENT: ' + event + ' MESSAGE: ' + args[0]);
   });
 
   setInterval(function() {
