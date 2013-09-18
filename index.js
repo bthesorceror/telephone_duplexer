@@ -1,5 +1,4 @@
-var NosyNeighbor = require('nosy_neighbor'),
-    EventEmitter = require('events').EventEmitter,
+var EventEmitter = require('events').EventEmitter,
     StreamEncoder = require('./stream_encoder'),
     StreamDecoder = require('./stream_decoder');
 
@@ -28,15 +27,6 @@ TelephoneDuplexer.prototype.close = function() {
   this.stream.end();
 }
 
-TelephoneDuplexer.prototype.onEvent = function(cb) {
-  this.nosyNeighbor().onEvent(cb);
-}
-
-TelephoneDuplexer.prototype.nosyNeighbor = function() {
-  this._nosy = this._nosy || (new NosyNeighbor());
-  return this._nosy;
-}
-
 TelephoneDuplexer.prototype.setupOutgoing = function() {
   var opts = {
     timeout: this.callback_timeout
@@ -47,7 +37,6 @@ TelephoneDuplexer.prototype.setupOutgoing = function() {
 TelephoneDuplexer.prototype.setupIncoming = function() {
   var self = this;
   this.incoming = new EventEmitter();
-  this.nosyNeighbor().peek(this.incoming);
 
   var decoder = new StreamDecoder(this.incoming);
 

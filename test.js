@@ -62,22 +62,6 @@ NopStream.prototype.end = function () {
     tele2.emit('message1', 'BLAH');
   });
 
-  tape("generic 'incoming' event", function(t) {
-    var stream = new NopStream();
-
-    var tele1 = new Telephone(stream),
-        tele2 = new Telephone(stream);
-
-    t.plan(2);
-
-    tele1.onEvent(function(event, msg) {
-      t.equal(event, 'message1', 'corrent event');
-      t.deepEqual(msg, ['BLAH', 'BLAH!'], 'correct arguments');
-    });
-
-    tele2.emit('message1', 'BLAH', 'BLAH!');
-  });
-
   tape("events with callbacks", function(t) {
     var stream = new NopStream();
 
