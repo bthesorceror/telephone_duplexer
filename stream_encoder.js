@@ -41,7 +41,6 @@ StreamEncoder.prototype.removeTimeout = function(id) {
 }
 
 StreamEncoder.prototype.close = function() {
-  var self = this;
   for (key in this.timeouts) {
     clearTimeout(this.timeouts[key]);
   };
