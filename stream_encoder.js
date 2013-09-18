@@ -1,16 +1,19 @@
 var uuid    = require('uuid');
 var helpers = require('./helpers');
+var Readable = require('stream').Readable;
 
-function StreamEncoder(stream, emitter, options) {
+function StreamEncoder(emitter, options) {
+  Readable.apply(this);
   options = options || {};
-  this.stream = stream;
   this.emitter = emitter;
   this.timeout = options['timeout'] || 60000;
   this.timeouts = {};
 }
 
+(require('util')).inherits(StreamEncoder, Readable);
+
 StreamEncoder.prototype.needsCallback = function(args) {
-  var last = args.slice(-1)[0];
+  var last = args[args.length -1];
   return (typeof(last) == 'function');
 }
 
@@ -44,10 +47,11 @@ StreamEncoder.prototype.close = function() {
   });
 }
 
-StreamEncoder.prototype.emit = function() {
+StreamEncoder.prototype.send = function() {
   var id = uuid.v1();
   var replies = false;
   var args = helpers.parseArgs(arguments);
+  console.dir(args);
 
   if (this.needsCallback(args)) {
     replies = true;
@@ -57,8 +61,9 @@ StreamEncoder.prototype.emit = function() {
     this.addTimeout(id, cb);
   }
 
-  this.stream.write(this.buildData(id, replies, args) + "\n");
+  this.push(this.buildData(id, replies, args) + "\n");
 }
 
-module.exports = StreamEncoder;
+StreamEncoder.prototype._read = function() {}
 
+module.exports = StreamEncoder;

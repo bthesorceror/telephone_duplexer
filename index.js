@@ -31,7 +31,8 @@ TelephoneDuplexer.prototype.setupOutgoing = function() {
   var opts = {
     timeout: this.callback_timeout
   };
-  this.outgoing = new StreamEncoder(this.stream, this.incoming, opts);
+  this.outgoing = new StreamEncoder(this.incoming, opts);
+  this.outgoing.pipe(this.stream);
 }
 
 TelephoneDuplexer.prototype.setupIncoming = function() {
@@ -61,7 +62,7 @@ TelephoneDuplexer.prototype.once = function() {
 }
 
 TelephoneDuplexer.prototype.emit = function() {
-  this.outgoing.emit.apply(this.outgoing, arguments);
+  this.outgoing.send.apply(this.outgoing, arguments);
 }
 
 TelephoneDuplexer.prototype.setMaxListeners = function(count) {
