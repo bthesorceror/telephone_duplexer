@@ -1,6 +1,6 @@
 var EventEmitter = require('events').EventEmitter,
-    StreamEncoder = require('./stream_encoder'),
-    StreamDecoder = require('./stream_decoder');
+    StreamEncoder = require('./lib/stream_encoder'),
+    StreamDecoder = require('./lib/stream_decoder');
 
 function TelephoneDuplexer(stream, options) {
   options = options || {};
