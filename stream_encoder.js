@@ -51,7 +51,6 @@ StreamEncoder.prototype.send = function() {
   var id = uuid.v1();
   var replies = false;
   var args = helpers.parseArgs(arguments);
-  console.dir(args);
 
   if (this.needsCallback(args)) {
     replies = true;
