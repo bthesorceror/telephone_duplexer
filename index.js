@@ -4,8 +4,11 @@ var EventEmitter = require('events').EventEmitter,
 
 function TelephoneDuplexer(stream, options) {
   options = options || {};
+
   this.callback_timeout = options['callback_timeout'];
-  this.stream = stream;
+  this.stream           = stream;
+  this.emitter          = new EventEmitter();
+
   this.setupIncoming();
   this.setupOutgoing();
   this.delegateEvents();
@@ -39,7 +42,6 @@ TelephoneDuplexer.prototype.setupOutgoing = function() {
 
 TelephoneDuplexer.prototype.setupIncoming = function() {
   var self = this;
-  this.emitter = new EventEmitter();
 
   var decoder = new StreamDecoder(this.emitter);
 
