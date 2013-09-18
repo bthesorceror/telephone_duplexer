@@ -31,15 +31,15 @@ TelephoneDuplexer.prototype.setupOutgoing = function() {
   var opts = {
     timeout: this.callback_timeout
   };
-  this.outgoing = new StreamEncoder(this.incoming, opts);
+  this.outgoing = new StreamEncoder(this.emitter, opts);
   this.outgoing.pipe(this.stream);
 }
 
 TelephoneDuplexer.prototype.setupIncoming = function() {
   var self = this;
-  this.incoming = new EventEmitter();
+  this.emitter = new EventEmitter();
 
-  var decoder = new StreamDecoder(this.incoming);
+  var decoder = new StreamDecoder(this.emitter);
 
   this.stream.pipe(decoder);
 
@@ -54,11 +54,11 @@ TelephoneDuplexer.prototype.events = function() {
 }
 
 TelephoneDuplexer.prototype.on = function() {
-  this.incoming.on.apply(this.incoming, arguments);
+  this.emitter.on.apply(this.emitter, arguments);
 }
 
 TelephoneDuplexer.prototype.once = function() {
-  this.incoming.once.apply(this.incoming, arguments);
+  this.emitter.once.apply(this.emitter, arguments);
 }
 
 TelephoneDuplexer.prototype.emit = function() {
@@ -66,15 +66,15 @@ TelephoneDuplexer.prototype.emit = function() {
 }
 
 TelephoneDuplexer.prototype.setMaxListeners = function(count) {
-  this.incoming.setMaxListeners(count);
+  this.emitter.setMaxListeners(count);
 }
 
 TelephoneDuplexer.prototype.removeAllListeners = function() {
-  this.incoming.removeAllListeners();
+  this.emitter.removeAllListeners();
 }
 
 TelephoneDuplexer.prototype.removeListener = function() {
-  this.incoming.removeListener.apply(this.incoming, arguments);
+  this.emitter.removeListener.apply(this.emitter, arguments);
 }
 
 module.exports = TelephoneDuplexer;

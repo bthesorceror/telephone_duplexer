@@ -109,9 +109,9 @@ NopStream.prototype.end = function () {
         tele1  = new Telephone(stream);
 
     t.plan(2);
-    t.ok(tele1.incoming.setMaxListeners, 'function exists');
+    t.ok(tele1.emitter.setMaxListeners, 'function exists');
 
-    tele1.incoming.setMaxListeners = function(count) {
+    tele1.emitter.setMaxListeners = function(count) {
       t.equal(count, 15, 'maxListeners is delegated.');
     }
 
@@ -123,9 +123,9 @@ NopStream.prototype.end = function () {
         tele1  = new Telephone(stream);
 
     t.plan(3);
-    t.ok(tele1.incoming.removeListener, 'function exists');
+    t.ok(tele1.emitter.removeListener, 'function exists');
 
-    tele1.incoming.removeListener = function(event, cb) {
+    tele1.emitter.removeListener = function(event, cb) {
       t.equal(cb, 'cb', 'correct callback');
       t.equal(event, 'event', 'correct event');
     }
@@ -138,9 +138,9 @@ NopStream.prototype.end = function () {
         tele1  = new Telephone(stream);
 
     t.plan(2);
-    t.ok(tele1.incoming.removeAllListeners, 'function exists');
+    t.ok(tele1.emitter.removeAllListeners, 'function exists');
 
-    tele1.incoming.removeAllListeners = function() {
+    tele1.emitter.removeAllListeners = function() {
       t.ok(true, 'listeners removed');
     }
 
