@@ -40,11 +40,11 @@ StreamEncoder.prototype.removeTimeout = function(id) {
   delete this.timeouts[id];
 }
 
-StreamEncoder.prototype.close = function() {
+StreamEncoder.prototype.end = function() {
   var self = this;
-  Object.keys(this.timeouts).forEach(function(key) {
-    clearTimeout(self.timeouts[key]);
-  });
+  for (key in this.timeouts) {
+    clearTimeout(this.timeouts[key]);
+  };
 }
 
 StreamEncoder.prototype.send = function() {
